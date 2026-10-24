@@ -1,0 +1,44 @@
+[
+  {
+    "id": "weekend-frames",
+    "name": "Weekend Frames",
+    "interest": "Photography",
+    "icon": "◉",
+    "tagline": "A short walk. A different way to see.",
+    "about": "A relaxed photography circle for adults who enjoy noticing everyday details. Bring a phone or camera; no experience needed.",
+    "members": "Fictional organizers: Jamie and Noor. The sample group brings together beginner photographers and curious weekend walkers, ages 18–25.",
+    "joining": "In a real listing, contact the organizers to ask about the next photo walk and accessibility. This fictional demo group cannot be joined.",
+    "contact": "weekendframes@example.invalid — fictional, not monitored",
+    "nextSession": "Sample photo walk · 31 October 2026, 10:00–11:30 SGT (UTC+8)",
+    "location": "Sample location: a public park meeting point; details would be shared by an organizer.",
+    "sample": true
+  },
+  {
+    "id": "small-sessions",
+    "name": "Small Sessions",
+    "interest": "Music",
+    "icon": "♫",
+    "tagline": "Share a song. Find a common note.",
+    "about": "A casual listening and acoustic music circle. Talk about a favorite song, try a simple rhythm, or just listen. Performing is optional.",
+    "members": "Fictional organizers: Alex and Mei. Sample members are young adult listeners, beginner musicians, and people trying a new hobby.",
+    "joining": "Ask the organizers about the session format and available instruments. This is a fictional listing; there is no real membership or booking.",
+    "contact": "smallsessions@example.invalid — fictional, not monitored",
+    "nextSession": "Sample listening circle · 1 November 2026, 15:00–16:30 SGT (UTC+8)",
+    "location": "Sample location: a neighborhood community room.",
+    "sample": true
+  },
+  {
+    "id": "table-for-more",
+    "name": "Table for More",
+    "interest": "Board games",
+    "icon": "◇",
+    "tagline": "One table, a few new faces.",
+    "about": "Beginner-friendly board games with space to learn the rules together. Come for an easy game and a low-pressure conversation.",
+    "members": "Fictional organizer: Sam. The sample group includes young adults who enjoy puzzles, cooperative games, and meeting people through a shared activity.",
+    "joining": "A real organizer could tell you which games are planned and whether a place is available. This demo has no live sign-up.",
+    "contact": null,
+    "nextSession": null,
+    "location": "Sample location to be announced by an organizer.",
+    "sample": true
+  }
+]

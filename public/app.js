@@ -1,6 +1,8 @@
 const $ = selector => document.querySelector(selector);
 let state, busy = false, lastMessageSignature = '';
 let requestBusy = false, requestRetryId;
+let savedOnly = false, groupSignature = '', bookmarkBusy = null;
+const expandedGroups = new Set();
 
 async function api(path, body) {
   const response = await fetch(path, body === undefined ? {} : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
@@ -30,6 +32,7 @@ function render() {
   $('#reply-offer').hidden = !on || c.replyOffer !== 'pending' || state.guidanceActive;
   $('#welcome').hidden = c.messages.length > 0;
   renderHuman();
+  renderGroups();
   $('#send').disabled = busy;
   $('#send').textContent = busy ? '…' : '↑';
   const signature = JSON.stringify(c.messages);
@@ -91,6 +94,60 @@ function renderHuman() {
     : 'Send a request first, then continue in a full-page chat once it is accepted.';
 }
 function openHuman() { window.location.assign('/messages'); }
+function renderGroups() {
+  $('#saved-count').textContent = state.bookmarks.length;
+  $('#browse-groups').setAttribute('aria-pressed', String(!savedOnly));
+  $('#saved-groups').setAttribute('aria-pressed', String(savedOnly));
+  const signature = JSON.stringify([savedOnly, state.bookmarks, state.groups, bookmarkBusy]);
+  if (signature === groupSignature) return;
+  groupSignature = signature;
+  const groups = (state.groups || []).filter(g => !savedOnly || state.bookmarks.includes(g.id));
+  $('#group-list').replaceChildren();
+  if (!groups.length) {
+    const empty = element('div', 'group-empty');
+    empty.append(element('span', '', '♡'), element('p', '', savedOnly ? 'No saved interest groups yet. Explore the groups and save one that catches your eye.' : 'No sample groups are available right now.'));
+    $('#group-list').append(empty);
+  }
+  for (const group of groups) {
+    const card = element('article', 'interest-card');
+    const top = element('div', 'interest-top');
+    top.append(element('span', 'interest-icon ' + group.id, group.icon));
+    const heading = element('div', 'interest-heading');
+    heading.append(element('span', 'interest-category', group.interest), element('h4', '', group.name));
+    top.append(heading); card.append(top, element('p', 'interest-tagline', group.tagline));
+    const details = element('details', 'interest-details');
+    details.open = expandedGroups.has(group.id);
+    details.ontoggle = () => { if (details.open) expandedGroups.add(group.id); else expandedGroups.delete(group.id); };
+    details.append(element('summary', '', 'About this group'));
+    for (const [label, content] of [
+      ['What it is about', group.about], ['Organizers & members', group.members],
+      ['How to join', group.joining], ['Contact', group.contact || 'Contact details not provided.'],
+      ['Next session', group.nextSession || 'No upcoming session announced.'], ['Where', group.location],
+    ]) {
+      const section = element('div', 'group-detail');
+      section.append(element('strong', '', label), element('p', '', content));
+      details.append(section);
+    }
+    card.append(details);
+    const saved = state.bookmarks.includes(group.id);
+    const save = element('button', 'group-save' + (saved ? ' saved' : ''), bookmarkBusy === group.id ? 'Saving…' : saved ? '✓ Saved interest · remove' : '＋ Save interest group');
+    save.type = 'button'; save.disabled = bookmarkBusy !== null;
+    save.setAttribute('aria-label', (saved ? 'Remove ' : 'Save ') + group.name + (saved ? ' from saved interests' : ' to saved interests'));
+    save.onclick = () => saveGroup(group.id, !saved);
+    card.append(save); $('#group-list').append(card);
+  }
+}
+async function saveGroup(groupId, saved) {
+  if (bookmarkBusy) return;
+  bookmarkBusy = groupId; renderGroups();
+  try {
+    state = await api('/api/bookmarks', { groupId, saved });
+    $('#group-status').textContent = saved ? 'Added to Saved interests.' : 'Removed from Saved interests.';
+  } catch (e) { $('#group-status').textContent = 'Could not save this change. ' + e.message; }
+  finally { bookmarkBusy = null; render(); }
+}
+$('#browse-groups').onclick = () => { savedOnly = false; renderGroups(); };
+$('#saved-groups').onclick = () => { savedOnly = true; renderGroups(); };
 function openRequest() { panel(true); $('#request-box').hidden = false; $('#human-section').scrollIntoView({ block:'start' }); $('#request-input').focus(); }
 $('#request-volunteer').onclick = openRequest;
 $('#open-request').onclick = openRequest;

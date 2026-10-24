@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { newConversation, setMonitoring, guidanceActive, consumeUserCue, considerReply, resolveReplyOffer } from './rules.js';
 import { safeModelError } from './gemini.js';
+import groups from '../public/groups.json' with { type: 'json' };
 
 export class HttpError extends Error { constructor(status, message) { super(message); this.status = status; } }
 function text(value) {
@@ -12,7 +13,7 @@ function id(value) {
   return value;
 }
 export function userView(state) {
-  return { ...state, conversation: { ...state.conversation, window: undefined,
+  return { ...state, groups, conversation: { ...state.conversation, window: undefined,
     messages: state.conversation.messages.map(({ cueProcessed, ...m }) => m) }, guidanceActive: guidanceActive(state) };
 }
 
@@ -105,7 +106,15 @@ export function createRoutes(store, modelFactory) {
     }
     if (method === 'POST' && path === '/api/chat') return sendChat(body);
     if (method !== 'POST') throw new HttpError(404, 'Not found.');
-    if (path === '/api/volunteer/availability') {
+    if (path === '/api/bookmarks') {
+      if (typeof body.saved !== 'boolean' || !groups.some(g => g.id === body.groupId)) throw new HttpError(400, 'Choose a valid interest group and save state.');
+      await store.mutate(s => {
+        const ids = new Set(s.bookmarks);
+        if (body.saved) ids.add(body.groupId); else ids.delete(body.groupId);
+        s.bookmarks = [...ids];
+      });
+      return view();
+    } else if (path === '/api/volunteer/availability') {
       if (typeof body.available !== 'boolean') throw new HttpError(400, 'Choose available or unavailable.');
       await store.mutate(s => { s.volunteerAvailable = body.available; });
       return { available: store.read().volunteerAvailable, threads: store.read().humanThreads };

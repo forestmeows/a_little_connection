@@ -23,7 +23,7 @@ The companion checks for three qualifying user messages spanning two categories 
 
 For example, in a fictional role-play send separate messages expressing inability to cope without the chat, withdrawing from friends in favor of AI, and surrendering independent decisions. A pattern should offer a check-in and disclose guidance. Real model classification can vary; the rule logic is separately tested. Monitoring failures are displayed rather than treated as successful checks. A monitored turn can require three API calls; pause between sends if quota is limited.
 
-Volunteer messaging is now available. Community bookmarks remain a later checklist step.
+Volunteer messaging and community bookmarks are available. See below for the current request/acceptance flow.
 
 Gemini free-tier input/output may be used to improve Google products. Do not submit personal or sensitive information. Human-volunteer conversations in the planned app will remain separate from Gemini.
 
@@ -40,3 +40,14 @@ History stays after refresh, a new AI conversation, or a server restart. Volunte
 In the companion, Send a new request opens the initial message form. Submit multiple fictional requests if desired; each is a separate pending conversation. Open current chats shows Pending requests and Accepted chats in the full-page inbox. The check-in action opens the request form as well.
 
 In /volunteer, turn availability on, choose a pending request, and click Accept request. Replying requires both acceptance and availability. Once accepted, the user can continue in the large inbox; a user may leave messages while the volunteer is away. The same demo pair acts on multiple threads; this does not create real separate volunteers or users. Refresh all open pages after updates.
+## Step 4: Interest groups and saved bookmarks
+
+Open Companion and scroll to Shared interests, small beginnings. Explore groups contains three explicitly fictional groups. Expand About this group to inspect purpose, organizers/members, joining guidance, contact, and next session. Save interest group adds it to Saved interests; the saved control can remove it. Saving is a bookmark, not membership. These sample contacts/events do not correspond to real activities.
+
+Bookmarks, human history, and settings remain in local ignored data/demo.json. Restarting the app resets volunteer availability, but does not clear conversations or bookmarks.
+
+## Short demo recording route
+
+Use fictional adult scenarios only. Close .env and any key/account pages before recording. Show the app, enable monitoring, and use three clear cue messages spanning two categories to demonstrate the check-in and automatic guidance. Describe that the model labels are experimental while the threshold/cooldown are coded rules. Open the request form, submit a message, and switch to the volunteer window. Turn availability on, accept the request, and type a real reply. Return to the user inbox to see it. Finish by inspecting and saving a fictional interest group, then show it in Saved interests after refresh. The separate setup-check script tests concerning versus supportive chatbot replies without forcing live Gemini to generate a concerning reply.
+
+Known boundaries: one local adult demo user and one volunteer role; no production authentication, real nonprofit staffing, group membership/chat, third-party chatbot extension integration, or validated diagnosis. Unadjusted chat uses provider defaults; active adjustments add guidance. Gemini free-tier limits and internet access can interrupt model features; human messaging and sample communities operate locally.

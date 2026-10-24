@@ -29,7 +29,7 @@ Build mode: learn (chosen by the learner).
   Learner check: Open http://127.0.0.1:3000/, inspect the look, activate monitoring, try the fictional examples, dismiss a check-in, manually enable guidance, turn monitoring off, and start a new chat. Describe confusing behavior or visual changes desired.
   Commit: `Add monitored chat and transparent balanced-response guidance`
 
-- [ ] **3. Connect the user to a real volunteer in the second window**
+- [x] **3. Connect the user to a real volunteer in the second window**
   Becomes usable: A user-written request reaches a real second participant; replies appear in the user panel, including pending messages when unavailable and retained conversation history.
   Why now: Completes the human-connection kernel immediately after the monitored chat works, without introducing accounts or hosting.
   PRD ref: `prd.md > Volunteer Request and Conversation`, `prd.md > Activation and Returning Use`, `prd.md > States and Boundaries`
@@ -57,6 +57,9 @@ Chat screen, companion controls, local API/persistence, and exact rules implemen
 
 ### Current Slice 3 Progress
 Volunteer view, availability, pending requests, real-person message routes, polling, and user history implemented. All 22 automated tests pass, including persistence, duplicate prevention, private AI-data exclusion, and concurrent saves. Both page scripts have no missing referenced IDs and pass syntax checks. Local server restarted; learner two-window check and feedback pending before commit/tick. No agent visual verification is claimed because browser runtime is unavailable.
+
+### Current Slice 4 Progress
+Three fictional interest groups, expandable details, saved/bookmark views, save/remove actions, and missing-detail states implemented. All 27 automated tests pass, including the combined check-in/guidance/human-acceptance/bookmark/restart journey. All page scripts pass syntax and referenced-element checks. Browser visual inspection remains a learner check due to unavailable browser runtime. Server restarted without clearing history or bookmarks; learner review pending before commit/tick.
 
 ## Hands-on Checkpoints
 
@@ -96,3 +99,5 @@ Activity mode: planned guided route in the live app and editor.
 - Slice 3 learner refinement: restore the companion Send request form alongside Open current chats; allow multiple independent pending requests and explicitly accepted chat histories. Added availability-gated accept/reply behavior on both UI and server, with pending/accepted inbox groups. All 25 tests pass, including unavailable rejection and independent acceptance/message isolation; learner retry pending. One real demo pair remains the boundary.
 
 - Slice 3 learner could not find Accept on the second request. Previously it was visible only inside the selected pending conversation. Added an explicit numbered Accept button directly on every pending request card and initial selection of a pending request, retaining the selected-conversation action. JavaScript syntax and served-script checks pass; no messages or acceptance states changed. Learner retry pending.
+
+Slice 3 learner feedback resolved: learner confirmed everything seems good after request acceptance and UI refinements. Step committed; proceeding to communities.
