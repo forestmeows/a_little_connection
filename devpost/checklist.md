@@ -39,7 +39,7 @@ Build mode: learn (chosen by the learner).
   Learner check: Open /volunteer in a second window. Leave an offline request from the user view, set the volunteer available, open the request, send a real reply, and return to the user view. Restart/reopen and confirm history remains.
   Commit: `Add persistent real-person volunteer handoff`
 
-- [ ] **4. Explore and bookmark communities, then verify the whole journey**
+- [x] **4. Explore and bookmark communities, then verify the whole journey**
   Becomes usable: Fictional interest groups have full detail views and persistent bookmarks; the complete agreed demo journey can be recorded.
   Why now: Adds the supporting connection-discovery route after the core human handoff is working, then checks the complete experience together.
   PRD ref: `prd.md > Interest Groups and Bookmarks`, `prd.md > The Core Journey`, `prd.md > States and Boundaries`
@@ -64,13 +64,13 @@ Three fictional interest groups, expandable details, saved/bookmark views, save/
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 2, try chat/companion interactions and visual direction; feedback can shape remaining surfaces.
-- [ ] Final kick-the-tires exploration and feedback completed — after slice 4, explore the complete journey and report findings.
+- [x] Final kick-the-tires exploration and feedback completed — after slice 4, explore the complete journey and report findings.
 
 In learn mode, every slice also pauses for its Learner check. In fast mode, the setup step still needs the learner's local key configuration, followed by the planned early and final app checkpoints.
 
 ## Final Review
 
-- [ ] Final review complete — feedback resolved and learner confirms ready to ship
+- [x] Final review complete — feedback resolved and learner confirms ready to ship
 
 Agreed refinements will be recorded here, implemented, mechanically verified, committed, and retried before marking completion.
 
@@ -101,3 +101,5 @@ Activity mode: planned guided route in the live app and editor.
 - Slice 3 learner could not find Accept on the second request. Previously it was visible only inside the selected pending conversation. Added an explicit numbered Accept button directly on every pending request card and initial selection of a pending request, retaining the selected-conversation action. JavaScript syntax and served-script checks pass; no messages or acceptance states changed. Learner retry pending.
 
 Slice 3 learner feedback resolved: learner confirmed everything seems good after request acceptance and UI refinements. Step committed; proceeding to communities.
+
+Final review outcome: learner explored the app, approved communities as a small proof of concept, and explicitly agreed to save the final checkpoint. All 27 tests passed. Implementation checkpoint: 6465067. Learning wrap-up/app map remain unfinished; do not repeat completed build/review checks on resume.
