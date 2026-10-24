@@ -1,0 +1,12 @@
+{
+  "name": "youth-ai-connection-companion",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "check:gemini": "node --env-file-if-exists=.env scripts/check-gemini.js",
+    "test": "node --test"
+  },
+  "dependencies": { "@google/genai": "2.31.0" }
+}
