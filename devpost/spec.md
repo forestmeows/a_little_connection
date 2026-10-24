@@ -81,7 +81,7 @@ Planned contracts:
 - `POST /api/volunteer/request` `{requestId,text}`; return thread ID and pending status.
 - `GET /api/volunteer`: availability and human requests/messages only; no AI transcript or cue data.
 - `POST /api/volunteer/availability` `{available}`; update availability.
-- `POST /api/volunteer/message` `{threadId,requestId,text,role}` with role restricted to the two local demo views; return saved human message. Volunteer reply changes pending to active.
+- `POST /api/volunteer/message` `{threadId,requestId,text,role}` with role restricted to the two local demo views; return saved human message. An explicit accept action changes pending to active; new volunteer replies require availability and an active thread.
 - `POST /api/bookmarks` `{groupId,saved}`; idempotently save/remove a sample group.
 
 Both views poll their own read endpoint about every two seconds while visible, plus immediately after mutations. Polling is local and never triggers model calls. A serialized mutation queue protects file updates; model work must not block volunteer requests.
@@ -131,6 +131,9 @@ project/
     groups.json            # fictional community details
     volunteer.html         # volunteer view shell
     volunteer.js           # availability and human replies
+    messages.html          # full-page user human inbox
+    messages.js            # inbox selection, sending, local updates
+    messages.css           # desktop messaging layout
   data/
     demo.json              # generated, ignored runtime history
   tests/
@@ -179,3 +182,11 @@ Build has begun: the slice 1 adapter and setup-check script exist; browser imple
 
 ## Default Chat Behavior Revision
 Learner-directed revision during slice 2: unadjusted chat must reflect the provider default, without app-authored behavioral instructions or a hidden fictional role-play task. Chat generation uses ai.models.generateContent with native contents [{role: user/model, parts: [{text}]}], mapping to POST https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent. Read response.text; config contains only an output-length cap and, when adjustments are active, systemInstruction: BALANCED_CHAT. Classifier calls remain separate Interactions requests with their own instructions. This changes the chat API contract only; Gemini model and product choices remain unchanged. Default and adjusted live generation both verified successfully; all 18 automated tests pass. Provider-built-in behavior still applies; the demo does not establish integration with arbitrary third-party chatbots.
+
+### Full-Page User Inbox
+Implements prd.md > Full-Page Human Chat Revision and Volunteer Request and Conversation. GET /messages serves public/messages.html, with /messages.js and /messages.css on the static allowlist. The companion and check-in action navigate there. User inbox uses existing /api/user and /api/volunteer/request or /api/volunteer/message endpoints; no new provider, identities, matching, or data model. Latest thread is selected by default; earlier threads are labeled as the same demo volunteer. Empty state lets the first message create a request. Render user/volunteer bubbles distinctly, show pending/availability, preserve drafts on send failure, and poll while visible. No AI content is sent to volunteer routes. Back to AI chat restores the existing AI conversation.
+
+### Request Acceptance and Availability Refinement
+Implements prd.md > Multiple Requests and Explicit Acceptance. public/app.js restores the companion request form and sends a fresh request ID for each submitted request. Open current chats navigates to /messages; /?request=1 opens the request form from the inbox. Inbox groups pending/active threads and disables follow-up composition until acceptance. Existing accepted conversations remain accessible; no history is removed.
+
+POST /api/volunteer/accept {threadId} requires volunteerAvailable=true, then persists status=active and acceptedAt. Repeated acceptance is idempotent. POST /api/volunteer/message requires an active thread; new volunteer messages additionally require availability=true. User follow-ups in active threads can be left while the volunteer is away. Pending initial requests are always allowed. The volunteer page can read requests while unavailable but disables Accept and Reply; backend checks enforce the same rules. Each thread retains its own messages. No model calls or real multi-person identities are involved.

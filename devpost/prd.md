@@ -24,7 +24,7 @@ Source: `scope.md > The Core Loop` and `What "Working" Looks Like`.
 ## Screens and Layout
 - **Main chat:** familiar chatbot conversation and message entry, with a small companion icon at the top.
 - **Companion panel:** opens from the icon. Contains monitoring controls, first-use explanation or prior activity, access to volunteer conversations, and interest groups. AI chat and volunteer conversations are clearly distinguished.
-- **Volunteer conversation:** a view within the companion for writing a request, reading replies, and continuing a human conversation.
+- **Volunteer conversation:** a full-page messaging view opened from the companion, with a conversation list on the left and the selected human conversation on the right. It supports writing requests, reading replies, and continuing the conversation. One demo volunteer; earlier threads remain accessible.
 - **Interest groups:** listings and group detail views within the companion, plus Saved interest groups.
 - **Volunteer view:** a separate surface where the demo volunteer sees requests and sends replies. For the demo, one volunteer can mark themselves available/unavailable, open pending requests, and reply.
 
@@ -200,3 +200,11 @@ Learner-approved revision: this prototype is directed at adults ages 18–25 onl
 
 ### Default and adjusted chatbot replies
 Unadjusted replies use Gemini default behavior, without app-authored baseline instructions or a hidden role-play wrapper. Monitoring calls are separate and do not instruct the chatbot. Balanced-response instructions are added only when adjustments are enabled manually, accepted from an offer, or automatically triggered by the agreed user-pattern rule. The provider retains its own built-in behavior. Start a new conversation to compare modes without earlier instructed replies in the history.
+
+### Full-Page Human Chat Revision
+Learner-approved refinement: user volunteer chat opens as a full-page desktop messaging layout, with a left conversation list and large selected chat on the right. Keep one identifiable demo volunteer, not multiple volunteer identities or assignment. Continue existing threads by default; preserve any earlier threads. The check-in action opens the companion request form. The separate Open current chats control navigates to the full-page inbox. A Back to AI chat link returns to the saved AI conversation. Offline pending messages and replies retain existing behavior.
+
+### Multiple Requests and Explicit Acceptance
+Learner-directed slice 3 refinement: keep the initial user-written Send request form in the companion, separate from Open current chats. Each submitted request creates a distinct pending thread. The inbox groups Pending requests and Accepted chats; accepted threads retain their full message history and support ongoing replies. Pending threads show the request and waiting state, with follow-up chat enabled after acceptance. Multiple threads simulate separate interactions while retaining one actual demo user and volunteer.
+
+The volunteer must turn availability on before accepting a pending request or sending a new reply. Availability off still permits viewing history. Requests remain acceptable while the volunteer is unavailable; no response time is promised. The volunteer explicitly accepts each request before chatting. Availability and acceptance are enforced by the server, not just by disabled controls. A user may leave follow-up messages in an accepted chat while the volunteer is away. No identities, assignment, or real multi-user access have been added.

@@ -63,8 +63,31 @@ test('local server serves the app but never credentials or runtime history', asy
   t.after(async () => { await new Promise(resolve => server.close(resolve)); await rm(dir, { recursive: true, force: true }); });
   const url = `http://127.0.0.1:${server.address().port}`;
   assert.equal((await fetch(url)).status, 200);
+  for (const path of ['/messages', '/messages.js', '/messages.css', '/volunteer']) assert.equal((await fetch(url + path)).status, 200);
   for (const path of ['/.env', '/data/demo.json', '/server/gemini.js']) assert.equal((await fetch(url + path)).status, 404);
   assert.equal((await fetch(url + '/api/settings', { method: 'POST', headers: { 'Content-Type':'application/json', Origin:'https://other.example' }, body:'{"monitoringOn":true}' })).status, 403);
+});
+
+test('user inbox and volunteer API exchange real typed messages without a model', async t => {
+  const dir = await mkdtemp(join(tmpdir(), 'companion-inbox-'));
+  const { server } = await createApp({ dataPath: join(dir, 'state.json'), modelFactory: () => { throw new Error('Human messages must not use AI'); } });
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  t.after(async () => { await new Promise(resolve => server.close(resolve)); await rm(dir, { recursive: true, force: true }); });
+  const url = `http://127.0.0.1:${server.address().port}`;
+  const post = async (path, value) => {
+    const response = await fetch(url + path, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(value) });
+    assert.equal(response.status, 200); return response.json();
+  };
+  const user = await post('/api/volunteer/request', {requestId:'inbox-request', text:'Fictional photography question'});
+  const threadId = user.humanThreads[0].id;
+  const volunteer = await (await fetch(url + '/api/volunteer')).json();
+  assert.equal(volunteer.threads[0].messages[0].text,'Fictional photography question');
+  await post('/api/volunteer/availability',{available:true});
+  await post('/api/volunteer/accept',{threadId});
+  await post('/api/volunteer/message',{requestId:'inbox-reply',threadId,role:'volunteer',text:'A real typed volunteer reply'});
+  const inbox = await (await fetch(url + '/api/user')).json();
+  assert.equal(inbox.humanThreads[0].messages.at(-1).text,'A real typed volunteer reply');
+  assert.equal(inbox.humanThreads[0].messages.at(-1).sender,'volunteer');
 });
 test('malformed saved data is not silently replaced', async t => {
   const { path } = await setup(t, () => ({}));

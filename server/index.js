@@ -9,7 +9,9 @@ import { createGemini } from './gemini.js';
 export async function createApp({ dataPath = resolve('data/demo.json'), modelFactory = () => createGemini() } = {}) {
   const store = await createStore(dataPath);
   const route = createRoutes(store, modelFactory);
-  const files = { '/': ['index.html','text/html'], '/app.js': ['app.js','text/javascript'], '/styles.css': ['styles.css','text/css'] };
+  const files = { '/': ['index.html','text/html'], '/app.js': ['app.js','text/javascript'], '/styles.css': ['styles.css','text/css'],
+    '/volunteer': ['volunteer.html','text/html'], '/volunteer.js': ['volunteer.js','text/javascript'],
+    '/messages': ['messages.html','text/html'], '/messages.js': ['messages.js','text/javascript'], '/messages.css': ['messages.css','text/css'] };
   const server = createServer(async (req, res) => {
     const json = (status, value) => { res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-Content-Type-Options':'nosniff' }); res.end(JSON.stringify(value)); };
     try {

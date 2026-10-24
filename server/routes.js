@@ -99,9 +99,55 @@ export function createRoutes(store, modelFactory) {
   }
   return async function route(method, path, body) {
     if (method === 'GET' && path === '/api/user') return view();
+    if (method === 'GET' && path === '/api/volunteer') {
+      const s = store.read();
+      return { revision: s.revision, available: s.volunteerAvailable, threads: s.humanThreads };
+    }
     if (method === 'POST' && path === '/api/chat') return sendChat(body);
     if (method !== 'POST') throw new HttpError(404, 'Not found.');
-    if (path === '/api/settings') {
+    if (path === '/api/volunteer/availability') {
+      if (typeof body.available !== 'boolean') throw new HttpError(400, 'Choose available or unavailable.');
+      await store.mutate(s => { s.volunteerAvailable = body.available; });
+      return { available: store.read().volunteerAvailable, threads: store.read().humanThreads };
+    } else if (path === '/api/volunteer/request') {
+      const requestId = id(body.requestId), content = text(body.text);
+      await store.mutate(s => {
+        const prior = s.humanThreads.flatMap(t => t.messages).find(m => m.requestId === requestId);
+        if (prior) {
+          if (prior.text !== content || prior.sender !== 'user') throw new HttpError(409, 'This request identifier is already used.');
+          return;
+        }
+        s.humanThreads.push({ id: randomUUID(), status: 'pending', createdAt: new Date().toISOString(),
+          messages: [{ id: randomUUID(), requestId, sender: 'user', text: content, at: new Date().toISOString() }] });
+      });
+      return view();
+    } else if (path === '/api/volunteer/accept') {
+      const threadId = id(body.threadId);
+      await store.mutate(s => {
+        const thread = s.humanThreads.find(t => t.id === threadId);
+        if (!thread) throw new HttpError(404, 'Request not found.');
+        if (thread.status === 'active') return;
+        if (!s.volunteerAvailable) throw new HttpError(409, 'Turn on your availability before accepting a request.');
+        thread.status = 'active'; thread.acceptedAt = new Date().toISOString();
+      });
+      return { available: store.read().volunteerAvailable, threads: store.read().humanThreads };
+    } else if (path === '/api/volunteer/message') {
+      const requestId = id(body.requestId), threadId = id(body.threadId), content = text(body.text);
+      if (!['user', 'volunteer'].includes(body.role)) throw new HttpError(400, 'Invalid message sender.');
+      await store.mutate(s => {
+        const thread = s.humanThreads.find(t => t.id === threadId);
+        if (!thread) throw new HttpError(404, 'Conversation not found.');
+        const prior = s.humanThreads.flatMap(t => t.messages).find(m => m.requestId === requestId);
+        if (prior) {
+          if (prior.text !== content || prior.sender !== body.role || !thread.messages.includes(prior)) throw new HttpError(409, 'This request identifier is already used.');
+          return;
+        }
+        if (thread.status !== 'active') throw new HttpError(409, 'This request must be accepted before continuing the conversation.');
+        if (body.role === 'volunteer' && !s.volunteerAvailable) throw new HttpError(409, 'Turn on your availability before replying.');
+        thread.messages.push({ id: randomUUID(), requestId, sender: body.role, text: content, at: new Date().toISOString() });
+      });
+      return body.role === 'user' ? view() : { available: store.read().volunteerAvailable, threads: store.read().humanThreads };
+    } else if (path === '/api/settings') {
       if (typeof body.monitoringOn !== 'boolean') throw new HttpError(400, 'Choose on or off.');
       await store.mutate(s => setMonitoring(s, body.monitoringOn));
     } else if (path === '/api/guidance') {

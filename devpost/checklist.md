@@ -19,7 +19,7 @@ Build mode: learn (chosen by the learner).
   Learner check: Save the key locally following instructions, inspect the live setup summary (or run npm run check:gemini yourself if desired), and confirm the setup/result is clear without exposing the key. Do not repeat the 13-call check solely for ceremony after an observed successful run.
   Commit: `Verify Gemini generation and contextual cue classification`
 
-- [ ] **2. Chat with the companion and see transparent interventions**
+- [x] **2. Chat with the companion and see transparent interventions**
   Becomes usable: A warm regular-looking chatbot with a heart icon, opt-in companion, pattern check-ins, automatic and optional guidance, manual guidance control, and new-chat/off behavior.
   Why now: Delivers the detection-and-response part of the distinctive idea early, allowing interaction and design feedback before adding more surfaces.
   PRD ref: `prd.md > Activation and Returning Use`, `prd.md > Pattern Detection and Check-In`, `prd.md > Automatic Balanced Responses`, `prd.md > Chatbot Reply Flags and User Choice`, `prd.md > Starting a New AI Conversation`, `prd.md > Look and Feel`
@@ -53,11 +53,14 @@ Build mode: learn (chosen by the learner).
 SDK @google/genai 2.31.0 installed and locked. Setup script, prompts, fixtures, and adapter implemented. Five offline adapter tests pass. Learner saved the local key. Live authentication, model listing, and generation succeed. Corrected SDK request formats. Full live check passed generation and all 12 fictional classifications with zero mismatches. Five offline adapter tests pass. Learner confirmed setup is clear; committed as 8267e3a. Slice 1 complete.
 
 ### Current Slice 2 Progress
-Chat screen, companion controls, local API/persistence, and exact rules implemented. All 17 automated tests pass. A live three-message fictional Gemini conversation completed all turns without monitoring errors: turn 3 triggered the check-in and automatic guidance. Local server is running at http://127.0.0.1:3000/. Browser preview runtime could not start, so no agent visual inspection is claimed; learner visual/interaction check is pending. Volunteer chat and communities remain explicitly labeled upcoming. Do not commit or tick slice 2 until learner feedback is resolved.
+Chat screen, companion controls, local API/persistence, and exact rules implemented. All 17 automated tests pass. A live three-message fictional Gemini conversation completed all turns without monitoring errors: turn 3 triggered the check-in and automatic guidance. Local server is running at http://127.0.0.1:3000/. Browser preview runtime could not start, so no agent visual inspection is claimed; learner visual/interaction check is pending. Volunteer chat and communities remain explicitly labeled upcoming. Learner confirmed both controls are visible and the default Gemini behavior is much better; slice 2 feedback resolved and checkpoint committed.
+
+### Current Slice 3 Progress
+Volunteer view, availability, pending requests, real-person message routes, polling, and user history implemented. All 22 automated tests pass, including persistence, duplicate prevention, private AI-data exclusion, and concurrent saves. Both page scripts have no missing referenced IDs and pass syntax checks. Local server restarted; learner two-window check and feedback pending before commit/tick. No agent visual verification is claimed because browser runtime is unavailable.
 
 ## Hands-on Checkpoints
 
-- [ ] Early usable behavior explored — after slice 2, try chat/companion interactions and visual direction; feedback can shape remaining surfaces.
+- [x] Early usable behavior explored — after slice 2, try chat/companion interactions and visual direction; feedback can shape remaining surfaces.
 - [ ] Final kick-the-tires exploration and feedback completed — after slice 4, explore the complete journey and report findings.
 
 In learn mode, every slice also pauses for its Learner check. In fast mode, the setup step still needs the learner's local key configuration, followed by the planned early and final app checkpoints.
@@ -87,3 +90,9 @@ Activity mode: planned guided route in the live app and editor.
 - Early slice 2 learner feedback: only one control was apparent. Numbered the companion monitoring and manual response-adjustment controls, gave the adjustment button its own labeled section, and clarified its disabled state. JavaScript syntax and diff checks pass; learner retry is pending.
 
 - Learner requested default model replies when adjustments are inactive. Removed baseline behavioral prompt and fictional task wrapper; native generateContent chat now supplies systemInstruction only when adjustments are active. Separate classifier prompts remain. Both default/adjusted live generation checks and all 18 tests pass. Updated PRD/spec/companions; learner retry pending.
+
+- Slice 3 learner refinement: move user human conversation from the cramped companion panel to a full-page desktop messaging inbox. Keep one demo volunteer; multiple identities/assignment remain out. Added /messages and native chat bubbles, history list, pending status, and back navigation using existing APIs and saved data. Updated PRD/spec and companions. All 23 tests pass, including two-role HTTP exchange; user visual/interaction retry is pending.
+
+- Slice 3 learner refinement: restore the companion Send request form alongside Open current chats; allow multiple independent pending requests and explicitly accepted chat histories. Added availability-gated accept/reply behavior on both UI and server, with pending/accepted inbox groups. All 25 tests pass, including unavailable rejection and independent acceptance/message isolation; learner retry pending. One real demo pair remains the boundary.
+
+- Slice 3 learner could not find Accept on the second request. Previously it was visible only inside the selected pending conversation. Added an explicit numbered Accept button directly on every pending request card and initial selection of a pending request, retaining the selected-conversation action. JavaScript syntax and served-script checks pass; no messages or acceptance states changed. Learner retry pending.
