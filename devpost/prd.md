@@ -197,3 +197,6 @@ The approved volunteer minimum is one demo volunteer with an availability contro
 
 ## Adult-Only Demo and AI Provider
 Learner-approved revision: this prototype is directed at adults ages 18–25 only, with adult participants and fictional conversations. Support for under-18s is a future ambition requiring separate provider and safeguarding review, not part of this app. Use the Gemini API free tier for the demo; no deployment is planned. Do not enable paid billing or silently switch to paid services. Free-tier availability and quotas must be checked during setup. Only fictional, non-sensitive chat content is sent to Gemini; volunteer messages remain separate and are not sent to the model.
+
+### Default and adjusted chatbot replies
+Unadjusted replies use Gemini default behavior, without app-authored baseline instructions or a hidden role-play wrapper. Monitoring calls are separate and do not instruct the chatbot. Balanced-response instructions are added only when adjustments are enabled manually, accepted from an offer, or automatically triggered by the agreed user-pattern rule. The provider retains its own built-in behavior. Start a new conversation to compare modes without earlier instructed replies in the history.

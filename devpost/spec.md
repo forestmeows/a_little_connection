@@ -18,7 +18,7 @@ Implements `prd.md > The Core Journey`.
 2. User activates the companion after the explanation. The server saves that choice.
 3. On a new user message, if monitoring is on and not in cooldown, Gemini classifies that message using recent fictional conversation context. Code updates the eight-user-message window.
 4. If three qualifying messages span two categories, code raises the check-in, enables automatic guidance before generating the next reply, clears the window, and starts eight user messages of cooldown.
-5. Gemini generates the chatbot reply using normal helpful instructions plus balanced guidance if active. A separate classification call checks the reply when monitoring is on. A qualifying reply offers the optional adjustment once per conversation; accepting affects future replies.
+5. Gemini generates the chatbot reply from native conversation history with no app-authored baseline behavior instruction. Add balanced guidance only when adjustments are active. A separate classification call checks the reply when monitoring is on. A qualifying reply offers the optional adjustment once per conversation; accepting affects future replies.
 6. User writes a volunteer request. The server saves only that human-chat message in the volunteer thread. The volunteer window reads pending requests and sends an actual human reply.
 7. Each window checks the local server periodically for human messages and availability. No Gemini calls are needed for this synchronization.
 8. Opening a fictional group shows its details; saving writes its ID to the local data file.
@@ -36,7 +36,7 @@ Windows laptop, Node 24, internet for Gemini, and two browser windows. Both wind
 Planned setup during build:
 1. Create a Gemini API key in Google AI Studio using an eligible free-tier project. Check active quota and that paid billing is not enabled. Never paste the key into chat.
 2. Put `GEMINI_API_KEY=...` and `GEMINI_MODEL=gemini-3.5-flash-lite` in ignored `.env`. Commit only secret-free `.env.example`.
-3. Run `npm install`, then `npm start`. The start script will run `node --env-file=.env server/index.js`.
+3. Run `npm install`, then `npm start`. The start script runs `node --env-file-if-exists=.env server/index.js` so missing-key guidance can be shown without preventing the local UI from starting.
 4. Open `http://127.0.0.1:3000/` and `http://127.0.0.1:3000/volunteer`.
 5. Use fictional conversation examples and have a second adult type volunteer replies. Record the end-to-end journey.
 
@@ -176,3 +176,6 @@ Learner agreed to two local windows, free Gemini, adult-only 18–25 fictional d
 Derived implementation details include plain HTML/CSS, polling, local JSON persistence, file layout, model candidate, and SDK adapter. The learner approved this blueprint, including local storage and the two-window demo approach. Build-time investigations: confirm free-tier account eligibility/quota, model access, compatible SDK version/schema, classification behavior and latency. If free-tier access or semantic classification cannot work, report the blocker and agree on a change; do not silently replace the kernel with a scripted demo.
 
 Build has begun: the slice 1 adapter and setup-check script exist; browser implementation has not started. The learner approved this technical plan; it is ready for `5-build`.
+
+## Default Chat Behavior Revision
+Learner-directed revision during slice 2: unadjusted chat must reflect the provider default, without app-authored behavioral instructions or a hidden fictional role-play task. Chat generation uses ai.models.generateContent with native contents [{role: user/model, parts: [{text}]}], mapping to POST https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent. Read response.text; config contains only an output-length cap and, when adjustments are active, systemInstruction: BALANCED_CHAT. Classifier calls remain separate Interactions requests with their own instructions. This changes the chat API contract only; Gemini model and product choices remain unchanged. Default and adjusted live generation both verified successfully; all 18 automated tests pass. Provider-built-in behavior still applies; the demo does not establish integration with arbitrary third-party chatbots.

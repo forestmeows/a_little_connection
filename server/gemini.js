@@ -1,7 +1,7 @@
 import { GoogleGenAI } from '@google/genai';
 import {
   USER_CATEGORIES, REPLY_CATEGORIES, USER_CLASSIFIER, REPLY_CLASSIFIER,
-  BASE_CHAT, BALANCED_CHAT, classifierInput,
+  BALANCED_CHAT, classifierInput,
 } from './prompts.js';
 
 export class ModelError extends Error {
@@ -45,7 +45,7 @@ export function createGemini({
   async function call(input, instruction, kind = null) {
     try {
       const response = await ai.interactions.create({
-        model, input, system_instruction: instruction, store: false,
+        model, input, ...(instruction ? { system_instruction: instruction } : {}), store: false,
         generation_config: { max_output_tokens: kind ? 512 : 1024 },
         ...(kind ? { response_format: { type: 'text', mime_type: 'application/json', schema: {
           type: 'object', properties: {
@@ -67,10 +67,23 @@ export function createGemini({
       return parseClassification(await call(classifierInput(context, text), REPLY_CLASSIFIER, 'reply'), 'reply');
     },
     async generate(messages, { balanced = false } = {}) {
-      const input = JSON.stringify({ fictionalConversation: messages.map(message => ({
-        role: message.role === 'assistant' ? 'assistant' : 'user', text: message.text,
-      })), task: 'Reply to the latest user message in this conversation.' });
-      return call(input, BASE_CHAT + (balanced ? '\n' + BALANCED_CHAT : ''));
+      // Native conversation roles preserve the actual exchange without a hidden
+      // role-play task or baseline behavioral instruction.
+      try {
+        const response = await ai.models.generateContent({
+          model,
+          contents: messages.map(message => ({
+            role: message.role === 'assistant' ? 'model' : 'user',
+            parts: [{ text: message.text }],
+          })),
+          config: {
+            maxOutputTokens: 1024,
+            ...(balanced ? { systemInstruction: BALANCED_CHAT } : {}),
+          },
+        });
+        if (!response.text?.trim()) throw new ModelError('EMPTY_REPLY', 'Gemini returned no usable text. Please retry later.');
+        return response.text.trim();
+      } catch (error) { throw safeModelError(error); }
     },
   };
 }

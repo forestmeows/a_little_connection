@@ -5,6 +5,7 @@
   "type": "module",
   "engines": { "node": ">=24" },
   "scripts": {
+    "start": "node --env-file-if-exists=.env server/index.js",
     "check:gemini": "node --env-file-if-exists=.env scripts/check-gemini.js",
     "test": "node --test"
   },

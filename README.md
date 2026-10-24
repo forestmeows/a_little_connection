@@ -13,6 +13,19 @@ Requires Node.js 24 and an eligible Gemini API free-tier account. No paid billin
 
 The planned model is `gemini-3.5-flash-lite`; its availability must be checked for your project. The script cannot inspect billing. If quota/model access fails, stop and investigate instead of enabling payment or silently switching providers. Classification examples are prototype checks, not clinical validation.
 
-`npm test` uses offline model stubs to check parsing/error behavior. A passing offline test does not establish live API access. The browser app is not built yet; see `devpost/checklist.md` for progress.
+`npm test` uses offline model stubs to check parsing/error behavior and exact conversation rules. A passing offline test does not establish live API access. See `devpost/checklist.md` for progress.
+
+## Step 2: Try the chat and companion
+
+Run `npm start`, then open http://127.0.0.1:3000/. Keep the terminal open; Ctrl+C stops the server. Click the heart-related Companion button and read the explanation before enabling monitoring. Use fictional messages only.
+
+The companion checks for three qualifying user messages spanning two categories within eight messages. Once triggered, the next eight user messages are a cooldown. You can dismiss the check-in, manually enable balanced guidance, turn monitoring off, or start a new AI conversation. Monitoring and manual guidance choices are reflected on screen. History is saved locally in ignored `data/demo.json`.
+
+For example, in a fictional role-play send separate messages expressing inability to cope without the chat, withdrawing from friends in favor of AI, and surrendering independent decisions. A pattern should offer a check-in and disclose guidance. Real model classification can vary; the rule logic is separately tested. Monitoring failures are displayed rather than treated as successful checks. A monitored turn can require three API calls; pause between sends if quota is limited.
+
+Volunteer messaging and community bookmarks are later checklist steps; the current UI labels them as upcoming, with no request sent from those placeholders.
 
 Gemini free-tier input/output may be used to improve Google products. Do not submit personal or sensitive information. Human-volunteer conversations in the planned app will remain separate from Gemini.
+
+### Default and adjusted chatbot replies
+Unadjusted replies use Gemini default behavior, without app-authored baseline instructions or a hidden role-play wrapper. Monitoring calls are separate and do not instruct the chatbot. Balanced-response instructions are added only when adjustments are enabled manually, accepted from an offer, or automatically triggered by the agreed user-pattern rule. The provider retains its own built-in behavior. Start a new conversation to compare modes without earlier instructed replies in the history.

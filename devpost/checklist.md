@@ -9,7 +9,7 @@ Build mode: learn (chosen by the learner).
 
 ## Slices
 
-- [ ] **1. Verify Gemini can generate and classify fictional conversations**
+- [x] **1. Verify Gemini can generate and classify fictional conversations**
   Becomes usable: A runnable setup-check script that confirms free-tier access, generates a reply, and classifies the agreed fictional cue examples.
   Why now: Proves the unfamiliar external service before building screens around it. This is a critical-risk investigation with runnable evidence, not a general setup phase.
   PRD ref: `prd.md > Pattern Detection and Check-In`, `prd.md > Chatbot Reply Flags and User Choice`, `prd.md > Adult-Only Demo and AI Provider`
@@ -50,7 +50,10 @@ Build mode: learn (chosen by the learner).
   Commit: `Add saved interest communities and complete demo journey`
 
 ### Current Slice 1 Progress
-SDK @google/genai 2.31.0 installed and locked. Setup script, prompts, fixtures, and adapter implemented. Five offline adapter tests pass. Learner saved the local key. Live authentication, model listing, and generation succeed. Corrected SDK request formats. Full live check passed generation and all 12 fictional classifications with zero mismatches. Five offline adapter tests pass. Waiting for learn-mode learner feedback before committing/ticking slice 1.
+SDK @google/genai 2.31.0 installed and locked. Setup script, prompts, fixtures, and adapter implemented. Five offline adapter tests pass. Learner saved the local key. Live authentication, model listing, and generation succeed. Corrected SDK request formats. Full live check passed generation and all 12 fictional classifications with zero mismatches. Five offline adapter tests pass. Learner confirmed setup is clear; committed as 8267e3a. Slice 1 complete.
+
+### Current Slice 2 Progress
+Chat screen, companion controls, local API/persistence, and exact rules implemented. All 17 automated tests pass. A live three-message fictional Gemini conversation completed all turns without monitoring errors: turn 3 triggered the check-in and automatic guidance. Local server is running at http://127.0.0.1:3000/. Browser preview runtime could not start, so no agent visual inspection is claimed; learner visual/interaction check is pending. Volunteer chat and communities remain explicitly labeled upcoming. Do not commit or tick slice 2 until learner feedback is resolved.
 
 ## Hands-on Checkpoints
 
@@ -80,3 +83,7 @@ Activity mode: planned guided route in the live app and editor.
 ## Revisions
 
 - Gemini SDK 2.31.0 uses the steps-based Interactions input contract: the planned turn-list input failed with HTTP 400. Switched to delimited JSON-string conversation input and explicit JSON response_format/schema; model/provider and product behavior remain unchanged. Live generation confirms the correction.
+
+- Early slice 2 learner feedback: only one control was apparent. Numbered the companion monitoring and manual response-adjustment controls, gave the adjustment button its own labeled section, and clarified its disabled state. JavaScript syntax and diff checks pass; learner retry is pending.
+
+- Learner requested default model replies when adjustments are inactive. Removed baseline behavioral prompt and fictional task wrapper; native generateContent chat now supplies systemInstruction only when adjustments are active. Separate classifier prompts remain. Both default/adjusted live generation checks and all 18 tests pass. Updated PRD/spec/companions; learner retry pending.
