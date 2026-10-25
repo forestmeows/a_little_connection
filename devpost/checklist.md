@@ -83,7 +83,7 @@ Agreed refinements will be recorded here, implemented, mechanically verified, co
 Activity and evidence: guided request route and app map shown from implementation 6465067; learner opened the map and the three source files in the IDE and reported everything seems good. Prior hands-on request/accept/reply review is complete. Map source references and offline dependencies checked; no browser-render inspection of the map claimed.
 Route and stops: public/app.js request-form submit handler → server/routes.js /api/volunteer/request → public/volunteer.js render(). Route explained; IDE context shows all three files open and learner reported no concerns.
 Edit outcome: no optional edit undertaken; existing user-led UI/behavior refinements were kept, verified, and committed during the build.
-Reflection: optional transfer reflection offered at handoff; no answer required. Any personal response belongs only in the ignored learner profile.
+Reflection: answered; personal response saved only in ignored learner-profile.md.
 Activity mode: live app/editor guided route, plus prior practice and the standalone reference map.
 
 ## Revisions
@@ -102,4 +102,6 @@ Activity mode: live app/editor guided route, plus prior practice and the standal
 
 Slice 3 learner feedback resolved: learner confirmed everything seems good after request acceptance and UI refinements. Step committed; proceeding to communities.
 
-Final review outcome: learner explored the app, approved communities as a small proof of concept, and explicitly agreed to save the final checkpoint. All 27 tests passed. Implementation checkpoint: 6465067. Learning wrap-up/app map remain unfinished; do not repeat completed build/review checks on resume.
+Final review outcome: learner explored the app, approved communities as a small proof of concept, and explicitly agreed to save the final checkpoint. All 27 tests passed. Implementation checkpoint: 6465067. Learning wrap-up and app map subsequently completed and committed as fe77caa; do not repeat completed steps.
+
+- Shipping refinement requested by learner: replaced the welcome and companion starburst marks, plus the guidance decorative sparkle, with simple hearts to distinguish the app branding. Visual-only markup change; no behavior or data changes.
