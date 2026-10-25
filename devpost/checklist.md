@@ -76,15 +76,15 @@ Agreed refinements will be recorded here, implemented, mechanically verified, co
 
 ## Code Tour and App Map
 
-- [ ] Learning activity complete — follow one actual check-in or human-message action through two or three code locations after final revisions
-- [ ] Optional edit and transfer reflection addressed — offer a small safe edit or brief transfer reflection, without requiring either
-- [ ] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
+- [x] Learning activity complete — follow one actual check-in or human-message action through two or three code locations after final revisions
+- [x] Optional edit and transfer reflection addressed — offer a small safe edit or brief transfer reflection, without requiring either
+- [x] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
 
-Activity and evidence: not started.
-Route and stops: choose actual final code locations after implementation.
-Edit outcome: not offered yet.
-Reflection: not offered yet; personal responses belong only in the ignored profile.
-Activity mode: planned guided route in the live app and editor.
+Activity and evidence: guided request route and app map shown from implementation 6465067; learner opened the map and the three source files in the IDE and reported everything seems good. Prior hands-on request/accept/reply review is complete. Map source references and offline dependencies checked; no browser-render inspection of the map claimed.
+Route and stops: public/app.js request-form submit handler → server/routes.js /api/volunteer/request → public/volunteer.js render(). Route explained; IDE context shows all three files open and learner reported no concerns.
+Edit outcome: no optional edit undertaken; existing user-led UI/behavior refinements were kept, verified, and committed during the build.
+Reflection: optional transfer reflection offered at handoff; no answer required. Any personal response belongs only in the ignored learner profile.
+Activity mode: live app/editor guided route, plus prior practice and the standalone reference map.
 
 ## Revisions
 
