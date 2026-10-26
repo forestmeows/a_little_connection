@@ -77,9 +77,10 @@ Free-tier availability and request limits depend on your account and model acces
 
 ### 5. Start the app
 
-Run:
+Enter the project folder and run:
 
 ```sh
+cd project
 npm start
 ```
 
