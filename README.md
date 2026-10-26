@@ -4,7 +4,7 @@ a little connection explores how a chatbot companion could encourage healthier A
 
 This working prototype has its own Gemini-powered chat and a companion panel. It demonstrates the experience of a future chatbot extension; it is not currently an installable extension for ChatGPT, Claude, or other websites.
 
-[Watch the demo](https://youtu.be/hWe5z8UI6ZE)
+[Watch the demo](https://www.youtube.com/watch?v=8oqGM6MJHeE)
 
 ## What it does
 
